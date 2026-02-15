@@ -173,3 +173,28 @@ CREATE POLICY "Allow authenticated deletes" ON storage.objects
     bucket_id = 'order-images' 
     AND auth.role() = 'authenticated'
   );
+-- 9. EXPENSES TABLE
+CREATE TABLE IF NOT EXISTS expenses (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  description TEXT NOT NULL,
+  amount DECIMAL(10,2) NOT NULL DEFAULT 0,
+  account TEXT NOT NULL,
+  vendedor_id UUID REFERENCES profiles(id),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS on expenses
+ALTER TABLE expenses ENABLE ROW LEVEL SECURITY;
+
+-- Expenses policies
+CREATE POLICY "Vendedores can view their own expenses" ON expenses
+  FOR SELECT USING (auth.uid() = vendedor_id);
+
+CREATE POLICY "Vendedores can insert their own expenses" ON expenses
+  FOR INSERT WITH CHECK (auth.uid() = vendedor_id);
+
+CREATE POLICY "Vendedores can update their own expenses" ON expenses
+  FOR UPDATE USING (auth.uid() = vendedor_id);
+
+CREATE POLICY "Vendedores can delete their own expenses" ON expenses
+  FOR DELETE USING (auth.uid() = vendedor_id);

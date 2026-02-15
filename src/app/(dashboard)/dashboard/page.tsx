@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { OrderCard, OrderFilter } from '@/components/orders';
 import { useOrders } from '@/hooks';
 import { OrderStatus } from '@/types/database';
-import { Loader2, Package, Plus } from 'lucide-react';
+import { Loader2, Package, Plus, FileText } from 'lucide-react';
 
 export default function DashboardPage() {
     const router = useRouter();
@@ -45,13 +45,22 @@ export default function DashboardPage() {
                         Gestiona y da seguimiento a tus pedidos textiles
                     </p>
                 </div>
-                <button
-                    onClick={() => router.push('/nuevo-pedido')}
-                    className="flex items-center justify-center gap-2 bg-accent text-background font-bold py-3 px-6 rounded-xl hover:bg-accent-hover transition-all duration-200 shadow-glow uppercase text-sm w-full sm:w-auto"
-                >
-                    <Plus size={20} />
-                    Nuevo Pedido
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                    <button
+                        onClick={() => router.push('/gastos')}
+                        className="flex items-center justify-center gap-2 bg-background-tertiary text-text-primary font-bold py-3 px-6 rounded-xl hover:bg-background-tertiary/80 transition-all duration-200 border border-card-border uppercase text-sm w-full sm:w-auto"
+                    >
+                        <FileText size={20} />
+                        Gastos
+                    </button>
+                    <button
+                        onClick={() => router.push('/nuevo-pedido')}
+                        className="flex items-center justify-center gap-2 bg-accent text-background font-bold py-3 px-6 rounded-xl hover:bg-accent-hover transition-all duration-200 shadow-glow uppercase text-sm w-full sm:w-auto"
+                    >
+                        <Plus size={20} />
+                        Nuevo Pedido
+                    </button>
+                </div>
             </div>
 
             {/* Filters */}

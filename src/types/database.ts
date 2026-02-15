@@ -81,6 +81,15 @@ export interface OrderWithItems extends Order {
     vendedor?: Profile;
 }
 
+export interface Expense {
+    id: string;
+    description: string;
+    amount: number;
+    account: string;
+    vendedor_id: string;
+    created_at: string;
+}
+
 // Database schema type for Supabase client
 export interface Database {
     public: {
@@ -99,6 +108,11 @@ export interface Database {
                 Row: OrderItem;
                 Insert: Omit<OrderItem, 'id' | 'subtotal'>;
                 Update: Partial<Omit<OrderItem, 'id' | 'subtotal'>>;
+            };
+            expenses: {
+                Row: Expense;
+                Insert: Omit<Expense, 'id' | 'created_at'>;
+                Update: Partial<Omit<Expense, 'id' | 'created_at'>>;
             };
         };
         Enums: {

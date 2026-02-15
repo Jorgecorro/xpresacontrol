@@ -14,7 +14,8 @@ import {
     LogOut,
     User,
     Menu,
-    X
+    X,
+    Receipt
 } from 'lucide-react';
 import { Profile } from '@/types/database';
 
@@ -27,6 +28,7 @@ const navItems = [
     { href: '/dashboard?status=pendiente', label: 'Pendientes', icon: Clock },
     { href: '/dashboard?status=cotizado', label: 'Cotizados', icon: FileText },
     { href: '/dashboard?status=enviado', label: 'Enviados', icon: Truck },
+    { href: '/gastos', label: 'Gastos', icon: Receipt },
     { href: '/dashboard?status=all', label: 'Todos', icon: List },
 ];
 
@@ -141,13 +143,15 @@ export function Sidebar({ user: initialUser }: SidebarProps) {
                     {navItems.map((item) => {
                         const Icon = item.icon;
 
-                        // Parse status from href
-                        const url = new URL(item.href, 'http://localhost');
-                        const itemStatus = url.searchParams.get('status') || 'all';
-
-                        // Determine if active
-                        const isDashboard = pathname === '/dashboard';
-                        const active = isDashboard && currentStatus === itemStatus;
+                        // Precise active logic
+                        let active = false;
+                        if (item.href.startsWith('/dashboard')) {
+                            const url = new URL(item.href, 'http://localhost');
+                            const itemStatus = url.searchParams.get('status') || 'all';
+                            active = pathname === '/dashboard' && currentStatus === itemStatus;
+                        } else {
+                            active = pathname === item.href;
+                        }
 
                         return (
                             <Link
